@@ -35,11 +35,12 @@ Route::get("test",function (){
      $user->email ="mehmet@gmail";
      $user->sys_role=1;
      $user->password =Hash::make("12345678");
-
+    $user->tckn ="1";
      $user->save();
 })->name("test");
 
-
+Route::post("/addUye",[AdminController::class,"addUye"])->name("addUye");
+Route::post("/deleteUye",[AdminController::class,"deleteUye"])->name("deleteUye");
 Route::get('/', function () {
     return view('auth.login');
 });
