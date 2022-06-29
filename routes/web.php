@@ -40,6 +40,7 @@ Route::get("test",function (){
 })->name("test");
 
 Route::post("/addUye",[AdminController::class,"addUye"])->name("addUye");
+Route::post("/addPark",[AdminController::class,"addPark"])->name("addPark");
 Route::post("/deleteUye",[AdminController::class,"deleteUye"])->name("deleteUye");
 Route::get('/', function () {
     return view('auth.login');

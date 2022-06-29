@@ -110,67 +110,65 @@
 ></script>
 
 <!-- Uder Modal-->
-<div class="modal" id="userModal">
+<div class="modal" id="parkModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Add User</h4>
+                <h4 class="modal-title">Add Park</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
             <!-- Modal body -->
             <div class="modal-body">
-                <form action="" method="post" id="uyeFrm">
+                <form action="{{route("addPark")}}" method="post" id="parkFrm">
                     @csrf
                     <div class="form-group">
-                        <label>Ad:</label>
-                        <input name="name" class="form-control">
+                        <label>Park Name:</label>
+                        <input name="park_name" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label>System Role:</label>
-                        <input name="sys_role" class="form-control">
+                        <label>location-x:</label>
+                        <input name="loc_x" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label>Password:</label>
-                        <input name="password" class="form-control">
+                        <label>location-y:</label>
+                        <input name="loc_y" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label>Email:</label>
-                        <input name="email" class="form-control">
+                        <label>m2:</label>
+                        <input name="m2" class="form-control">
                     </div>
-                    <div class="form-group">
-                        <label>TC:</label>
-                        <input name="tckn" class="form-control" maxlength="10">
-                    </div>
+
                 </form>
             </div>
 
             <!-- Modal footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" onclick="$('#uyeFrm').submit()">Kaydet</button>
+                <button type="button" class="btn btn-danger" onclick="$('#parkFrm').submit()">Kaydet</button>
             </div>
 
         </div>
     </div>
 </div>
 <!-- Uder Modal Finish-->
+<!--
+<form method="post" action="" id="deleteFrm">
 
-<form method="post" action="{{route("deleteUye")}}" id="deleteFrm">
-    @csrf
     <input type="hidden" name="id"/>
 </form>
-
+-->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
 <script>
-    /*
+
     $(document).ready(function () {
         $("#addBtn").click(function () {
-            $("#userModal").modal("show");
+            $("#parkModal").modal("show");
         })
     })
+    /*
     function deleteUser(id){
         if(confirm("Silme işlemini onaylayınız")){
             $("[name=id]").val(id);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Objects\Park;
 use App\Objects\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,6 +42,19 @@ class AdminController extends Controller
         $data["sidebar"] =view("users.admin.sidebar");
         return view("users.admin",$data);
 
+    }
+    public function addPark(Request $request){
+        $parkData = new Park();
+        $parkData->set_name($request->input('park_name'));
+        $parkData->set_loc_x($request->input('loc_x'));
+        $parkData->set_loc_y($request->input('loc_y'));
+        $parkData->set_m2($request->input('m2'));
+        $park_data =array('park_name'=>$parkData->get_name(),'loc_x'=>$parkData->get_loc_x(),'loc_y'=>$parkData->get_loc_y(),'m2'=>$parkData->get_m2());
+
+        $result = DB::table("parks")->insert($park_data);
+
+        if ($result)return redirect()->route("a-parks");
+        else echo "Wrong";
     }
     public function addUye(Request $request){
         $userData = new User();
