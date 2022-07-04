@@ -26,26 +26,72 @@
             'https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/24x24/qr_code.png',
             'https://cdn-icons-png.flaticon.com/128/714/714390.png'
         ]
-        function initMap(latt,long) {
 
+
+        function zoomMap(lat,long){
+
+            const zoomCenter = { lat:lat , lng:long};
+            // The map, centered at Uluru
+          const map=  new google.maps.Map(document.getElementById("map"), {
+                zoom: 18,
+                center: zoomCenter,
+            });
+
+            new google.maps.Circle({
+                strokeColor: "#FF0000",
+                strokeOpacity: 0.8,
+                strokeWeight: 2,
+                fillColor: "#FF0000",
+                fillOpacity: 0.35,
+                map,
+                center: {lat:lat,lng:long},
+                radius: 100,
+            });
+        }
+
+        function initMap() {
+
+            //41.189825776006465, 28.734209861305356
             // The location of Uluru
-            const uluru = { lat: latt, lng: long };
+           // const uluru = { lat: latt, lng: long };
+            const arnavutkoy = { lat:41.189825776006465 , lng:28.734209861305356  };
             // The map, centered at Uluru
             const map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 17,
-                center: uluru,
+                center: arnavutkoy,
             });
             // The marker, positioned at Uluru
-            const marker = new google.maps.Marker({
-                 position: uluru,
-                map: map,
-                title:'deneme',
-                icon:icon[1]
-            });
+
+
+            //const uluru = { lat: latt, lng: long };
+            @foreach($parks as $val)
+                new google.maps.Marker({
+
+                    position: { lat:{{$val->loc_x}},lng:{{$val->loc_y}} },
+                    map: map,
+                    title:'deneme',
+
+                    // icon:icon[1]
+                });
+                new google.maps.Circle({
+                    strokeColor: "#FF0000",
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: "#FF0000",
+                    fillOpacity: 0.35,
+                    map,
+                    center: { lat: {{$val->loc_x}} , lng:{{$val->loc_y}}},
+                    radius: 150,
+                });
+
+            @endforeach
+
+
             //marker.bindPopup();
         }
 
         window.initMap = initMap;
+
     </script>
 </head>
 
@@ -57,14 +103,21 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Parklar</h6><br>
+        <h6 class="m-0 font-weight-bold text-primary ">Parklar</h6><br>
 
+        <select  id="select_box" class="form-select mt-3" style="width: 30%" >
+            @foreach($parks as $val)
+                <option  enlem="{{$val->loc_x}}" boylam="{{$val->loc_y}}" >{{$val->park_name}}</option>
+            @endforeach
+        </select>
+        <input type="submit" class="btn btn-success"  value="Show" id="parkValue"/>
 
     </div>
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
+
                 <tr>
                     <th>*</th>
                     <th>Id</th>
@@ -81,7 +134,7 @@
 
                         <td><a href="javascript:void(0);"><i class="text-danger fas fa-trash"></i></a></td>
                         <td>{{$park->id}}</td>
-                        <td>{{$park->park_name}} <a href="javascript:void(0);" onclick="initMap({{$park->loc_x}},{{$park->loc_y}})"><i class="text-danger fas fa-location-dot"></i></a></td>
+                        <td>{{$park->park_name}} <a href="javascript:void(0);" onclick=""><i class="text-danger fas fa-location-dot"></i></a></td>
                         <td>{{$park->loc_x}}</td>
                         <td>{{$park->loc_y}}</td>
                         <td>{{$park->m2}}</td>
@@ -166,6 +219,15 @@
     $(document).ready(function () {
         $("#addBtn").click(function () {
             $("#parkModal").modal("show");
+        })
+    })
+
+    $(document).ready(function (){
+        $("#parkValue").click(function () {
+           var enlem= $("#select_box option:selected").attr("enlem");
+           var boylam= $("#select_box option:selected").attr("boylam");
+
+           zoomMap(parseFloat(enlem),parseFloat(boylam));
         })
     })
     /*

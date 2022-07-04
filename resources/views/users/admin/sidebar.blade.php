@@ -10,10 +10,6 @@
     </a>
 
 
-
-
-
-
     <!-- Heading -->
     <div class="sidebar-heading">
         Addons
@@ -35,6 +31,12 @@
             <span>PARK İŞLEMLERİ</span></a>
     </li>
 
+    <!-- Nav Item - Qrs-->
+    <li class="nav-item">
+        <a class="nav-link" href="{{route("a-qrs")}}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>QR İŞLEMLERİ</span></a>
+    </li>
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

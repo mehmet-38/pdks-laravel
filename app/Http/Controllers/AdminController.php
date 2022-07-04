@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helper\APIHelpers;
 use App\Objects\Park;
 use App\Objects\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,11 @@ class AdminController extends Controller
         // bu kod ile başlangıçta authanticate olmadan sayfa açılmasın dedik
 
     }
-
+    public function getUser(){
+        $user = User::all();
+        $response=APIHelpers::createAPIResponse(false,200,'',$user);
+        return json_encode(["users"=>$user]);
+    }
     public function home(){
 
         $data["title"] = "users";
@@ -35,10 +40,11 @@ class AdminController extends Controller
         return view("users.admin",$data);
 
     }
-    public function parks(){
+    public function parks(Request $request){
         $parks["parks"] = DB::table("parks")->get();
+        $parksData["parksData"]=DB::table("parks")->where("id","=",$request->id)->get();
         $data["title"] = "Parks";
-        $data["content"] = view("users.admin.parkControl",$parks);
+        $data["content"] = view("users.admin.parkControl",$parks,$parksData);
         $data["sidebar"] =view("users.admin.sidebar");
         return view("users.admin",$data);
 
@@ -79,6 +85,15 @@ class AdminController extends Controller
         else
             echo "Wrong";
     }
+
+        public function qrs(){
+            $qrs["qrs"] = DB::table("qrs")->get();
+            $data["title"] = "users";
+            $data["content"] = view("users.admin.qrControl",$qrs);
+            $data["sidebar"] =view("users.admin.sidebar");
+             return view("users.admin",$data);
+        }
+
 
 
 

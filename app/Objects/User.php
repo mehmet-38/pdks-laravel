@@ -1,5 +1,7 @@
 <?php
 namespace App\Objects;
+ use Illuminate\Support\Facades\DB;
+
  class User{
     public $name;
     public $password;
@@ -7,11 +9,20 @@ namespace App\Objects;
     public $email;
     public $tckn;
 
+
     function set_name($name) {
         $this->name = $name;
     }
     function get_name() {
         return $this->name;
+    }
+
+    public static function all(){
+       $user=DB::table("users")
+           ->select(["name","id"])
+           ->get();
+       return $user;
+
     }
 
     function set_password($password) {

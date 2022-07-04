@@ -23,6 +23,8 @@ Route::group(['prefix'=>'admin',"middleware"=>["auth","can:isAdmin","verified"]]
     Route::get('users',[AdminController::class,"users"])->name("a-users");
     Route::get('parks',[AdminController::class,"parks"])->name("a-parks");
     Route::get('home',[AdminController::class,"home"])->name("a-home");
+    Route::get('qrs',[AdminController::class,"qrs"])->name("a-qrs");
+    Route::get('get-users',[AdminController::class,"getUser"])->name("get-users");
 });
 
 Route::group(["prefix"=>"staff","middleware"=>["auth","can:isStaff","verified"]],function (){
