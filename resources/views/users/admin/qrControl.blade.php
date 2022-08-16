@@ -36,8 +36,8 @@
                 @foreach($qrs as $qr)
                     <tr>
 
-                        <td>{{$qr->code}}</td>
-                        <td>{{$qr->park_id}}</td>
+                        <td>{{$qr->QRdata}}</td>
+                        <td>{{$qr->fk_parkID}}</td>
 
                     </tr>
                 @endforeach

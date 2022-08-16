@@ -19,11 +19,14 @@ use App\Http\Controllers\GuestController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::group(['prefix'=>'admin',"middleware"=>["auth","can:isAdmin","verified"]],function (){
     Route::get('users',[AdminController::class,"users"])->name("a-users");
     Route::get('parks',[AdminController::class,"parks"])->name("a-parks");
     Route::get('home',[AdminController::class,"home"])->name("a-home");
     Route::get('qrs',[AdminController::class,"qrs"])->name("a-qrs");
+    Route::get('rapor',[AdminController::class,"rapor"])->name("a-rapor");
+    Route::get('all-rapor',[AdminController::class,"all_rapor"])->name("all-rapor");
    // Route::get('get-users',[AdminController::class,"getUser"])->name("get-users");
 });
 Route::get('get-users',[GuestController::class,"getUser"])->name("get-users");

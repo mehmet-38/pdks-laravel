@@ -24,8 +24,8 @@ namespace App\Objects;
        return $user;
 
     }
-    public static function deneme($email){
-        $user=DB::table("users")->select(["email"])->where("email","=",$email)->get();
+    public static function deneme($id){
+        $user=DB::table("users")->select(["id"])->where("id","=",$id)->get();
         return $user;
     }
 

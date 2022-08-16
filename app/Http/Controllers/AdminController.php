@@ -3,14 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Helper\APIHelpers;
+use App\Models\Task;
 use App\Objects\Park;
 use App\Objects\User;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Kreait\Firebase\Factory;
+use Symfony\Component\Console\Input\Input;
 
 class AdminController extends Controller
 {
@@ -53,7 +56,7 @@ class AdminController extends Controller
     }
     public function parks(Request $request){
         $parks["parks"] = DB::table("parks")->get();
-        $parksData["parksData"]=DB::table("parks")->where("id","=",$request->id)->get();
+        $parksData["parksData"]=DB::table("parks")->where("parkID","=",$request->id)->get();
         $data["title"] = "Parks";
         $data["content"] = view("users.admin.parkControl",$parks,$parksData);
         $data["sidebar"] =view("users.admin.sidebar");
@@ -62,11 +65,11 @@ class AdminController extends Controller
     }
     public function addPark(Request $request){
         $parkData = new Park();
-        $parkData->set_name($request->input('park_name'));
-        $parkData->set_loc_x($request->input('loc_x'));
-        $parkData->set_loc_y($request->input('loc_y'));
+        $parkData->set_name($request->input('parkName'));
+        $parkData->set_loc_x($request->input('latitude'));
+        $parkData->set_loc_y($request->input('longitude'));
         $parkData->set_m2($request->input('m2'));
-        $park_data =array('park_name'=>$parkData->get_name(),'loc_x'=>$parkData->get_loc_x(),'loc_y'=>$parkData->get_loc_y(),'m2'=>$parkData->get_m2());
+        $park_data =array('parkName'=>$parkData->get_name(),'latitude'=>$parkData->get_loc_x(),'longitude'=>$parkData->get_loc_y(),'m2'=>$parkData->get_m2());
 
         $result = DB::table("parks")->insert($park_data);
 
@@ -79,12 +82,11 @@ class AdminController extends Controller
         $userData->set_name($request->input('name'));
         $userData->set_password($request->input('password'));
         $userData->set_sys_role($request->input('sys_role'));
-        $userData->set_email($request->input('email'));
+        $userData->set_email
+        ($request->input('email'));
         $userData->set_tckn($request->input('tckn'));
         $data =array('name'=>$userData->get_name(),'password'=>Hash::make($userData->get_password()),'sys_role'=>$userData->get_sys_role(),'email'=>$userData->get_email(),'tckn'=>$userData->get_tckn());
          $response= DB::table("users")->insert($data);
-
-
 
          if ($response){
              $this->auth->createUserWithEmailAndPassword($request->input('email'), $request->input('password'));
@@ -103,14 +105,76 @@ class AdminController extends Controller
         else
             echo "Wrong";
     }
-
-        public function qrs(){
+    public function qrs(){
             $qrs["qrs"] = DB::table("qrs")->get();
             $data["title"] = "users";
             $data["content"] = view("users.admin.qrControl",$qrs);
             $data["sidebar"] =view("users.admin.sidebar");
              return view("users.admin",$data);
         }
+    public function rapor(Request $request){
+
+/*
+            $query = DB::table("tasks")
+                ->select("tasks.start_at","tasks.qr_id","users.name","tasks.finish_at")
+                ->join("users","users.id","=","tasks.user_id")
+                ->where(function ($query) use ($request){
+                    $query->where("users.name",$request->veri?"like":"<>", $request->veri?"$request->veri%":'')
+                        ->orWhere("user_id", $request->veri?"=":"<>", $request->veri?$request->veri:'')
+                        ->orWhere("users.tckn",$request->veri?"=":"<>",$request->veri?$request->veri:'');
+                })
+                //->where("start_at",$request->start_date?">=":"<>", $request->start_date?$request->start_date:'')
+                //->whereBetween("tasks.start_at",[$request->start_date,$request->finish_date])
+                //->where("finish_at",$request->finish_date?"<=":"<>", $request->finish_date?$request->finish_date:'')
+                ->get();*/
+
+            $search = $request->input('search');
+
+            if ($search !=''){
+                /*
+                $task = Task::where('user_id','like','%'.$search.'%')
+                    ->paginate(2)
+                    ->setpath('');*/
+                $task = Task::query()->join("users","users.id","=","tasks.user_id")
+                    ->where("users.name","like","%".$search."%")
+                    ->paginate(2)
+                    ->setPath('');
+                $task->appends(array(
+                    'search'=>$request->input('search'),
+                ));
+                if (count($task)>0){
+                    $data["title"]="Rapor";
+                    $data["content"]=view("users.admin.rapor")->with(['task'=>$task]);
+                    $data["sidebar"]=view("users.admin.sidebar");
+                    return view('users.admin',$data);
+                }
+                return view('users.admin.rapor')->withMessage("asdasd");
+
+            }
+
+
+
+        //return $query;
+
+    }
+    public function all_rapor(){
+
+
+       /*
+            $query["query"] = DB::table("tasks")
+                ->select("start_at","qr_id","user_id","finish_at")
+                ->join("users","users.id","=","tasks.user_id")
+                ->paginate(2);*/
+
+
+       $task = Task::query()->join("users","users.id","=","tasks.user_id")
+           ->paginate(2);
+
+        $data["title"] = "Rapor";
+        $data["content"]=view("users.admin.rapor",compact('task'));
+        $data["sidebar"]=view("users.admin.sidebar");
+        return view("users.admin",$data);
+    }
 
 
 

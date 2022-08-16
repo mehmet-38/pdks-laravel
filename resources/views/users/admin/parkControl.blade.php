@@ -67,7 +67,7 @@
             @foreach($parks as $val)
                 new google.maps.Marker({
 
-                    position: { lat:{{$val->loc_x}},lng:{{$val->loc_y}} },
+                    position: { lat:{{$val->latitude}},lng:{{$val->longitude}} },
                     map: map,
                     title:'deneme',
 
@@ -80,7 +80,7 @@
                     fillColor: "#FF0000",
                     fillOpacity: 0.35,
                     map,
-                    center: { lat: {{$val->loc_x}} , lng:{{$val->loc_y}}},
+                    center: { lat: {{$val->latitude}} , lng:{{$val->longitude}}},
                     radius: 150,
                 });
 
@@ -96,18 +96,14 @@
 </head>
 
 <body>
-<div class="btn-group" role="group" aria-label="Basic example">
-    <button id="addBtn" type="button" class="btn" ><i class="fa-solid fa-plus text-primary" ></i></button>
-    <button type="button" class="btn "><i class="fa-solid fa-gear text-primary" ></i></button>
 
-</div>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary ">Parklar</h6><br>
 
         <select  id="select_box" class="form-select mt-3" style="width: 30%" >
             @foreach($parks as $val)
-                <option  enlem="{{$val->loc_x}}" boylam="{{$val->loc_y}}" >{{$val->park_name}}</option>
+                <option  enlem="{{$val->latitude}}" boylam="{{$val->longitude}}" >{{$val->parkName}}</option>
             @endforeach
         </select>
         <input type="submit" class="btn btn-success"  value="Show" id="parkValue"/>
@@ -133,10 +129,10 @@
                     <tr>
 
                         <td><a href="javascript:void(0);"><i class="text-danger fas fa-trash"></i></a></td>
-                        <td>{{$park->id}}</td>
-                        <td>{{$park->park_name}} <a href="javascript:void(0);" onclick=""><i class="text-danger fas fa-location-dot"></i></a></td>
-                        <td>{{$park->loc_x}}</td>
-                        <td>{{$park->loc_y}}</td>
+                        <td>{{$park->parkID}}</td>
+                        <td>{{$park->parkName}} <a href="javascript:void(0);" onclick=""><i class="text-danger fas fa-location-dot"></i></a></td>
+                        <td>{{$park->latitude}}</td>
+                        <td>{{$park->longitude}}</td>
                         <td>{{$park->m2}}</td>
                     </tr>
                 @endforeach
@@ -179,15 +175,15 @@
                     @csrf
                     <div class="form-group">
                         <label>Park Name:</label>
-                        <input name="park_name" class="form-control">
+                        <input name="parkName" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>location-x:</label>
-                        <input name="loc_x" class="form-control">
+                        <input name="latitude" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>location-y:</label>
-                        <input name="loc_y" class="form-control">
+                        <input name="longitude" class="form-control">
                     </div>
                     <div class="form-group">
                         <label>m2:</label>

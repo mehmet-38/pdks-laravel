@@ -37,6 +37,13 @@
             <i class="fas fa-fw fa-table"></i>
             <span>QR İŞLEMLERİ</span></a>
     </li>
+    <!-- Nav Item - Rapor-->
+    <li class="nav-item">
+        <a class="nav-link" href="{{route("all-rapor")}}">
+            <i class="fas fa-fw fa-table"></i>
+            <span>RAPOR İŞLEMLERİ</span></a>
+    </li>
+
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
 

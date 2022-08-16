@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Action extends Model
 {
     use HasFactory;
+    public $timestamps = false;
+
+    protected $fillable=[
+        'lat',
+        'lng',
+        'fk_user_id',
+        ];
+
+
 }
