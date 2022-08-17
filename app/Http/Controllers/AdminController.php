@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helper\APIHelpers;
+use App\Models\Qr;
 use App\Models\Task;
 use App\Objects\Park;
 use App\Objects\User;
@@ -106,7 +107,10 @@ class AdminController extends Controller
             echo "Wrong";
     }
     public function qrs(){
-            $qrs["qrs"] = DB::table("qrs")->get();
+            //$qrs["qrs"] = DB::table("qrs")->get();
+        $qrs["qrs"] = Qr::query()->join("users","users.id","=","qrs.fk_user_id")
+            ->join("parks","parks.parkID","=","qrs.fk_park_id")
+            ->get();
             $data["title"] = "users";
             $data["content"] = view("users.admin.qrControl",$qrs);
             $data["sidebar"] =view("users.admin.sidebar");
@@ -114,22 +118,10 @@ class AdminController extends Controller
         }
     public function rapor(Request $request){
 
-/*
-            $query = DB::table("tasks")
-                ->select("tasks.start_at","tasks.qr_id","users.name","tasks.finish_at")
-                ->join("users","users.id","=","tasks.user_id")
-                ->where(function ($query) use ($request){
-                    $query->where("users.name",$request->veri?"like":"<>", $request->veri?"$request->veri%":'')
-                        ->orWhere("user_id", $request->veri?"=":"<>", $request->veri?$request->veri:'')
-                        ->orWhere("users.tckn",$request->veri?"=":"<>",$request->veri?$request->veri:'');
-                })
-                //->where("start_at",$request->start_date?">=":"<>", $request->start_date?$request->start_date:'')
-                //->whereBetween("tasks.start_at",[$request->start_date,$request->finish_date])
-                //->where("finish_at",$request->finish_date?"<=":"<>", $request->finish_date?$request->finish_date:'')
-                ->get();*/
 
             $search = $request->input('search');
-
+            $start_date = $request->input('start_date');
+            $finish_date = $request->input('finish_date');
             if ($search !=''){
                 /*
                 $task = Task::where('user_id','like','%'.$search.'%')
@@ -137,10 +129,14 @@ class AdminController extends Controller
                     ->setpath('');*/
                 $task = Task::query()->join("users","users.id","=","tasks.user_id")
                     ->where("users.name","like","%".$search."%")
+                    ->where("start_at",$start_date?">=":"<>", $start_date?$start_date:'')
+                    ->where("finish_at",$finish_date?"<=":"<>", $finish_date?$finish_date:'')
                     ->paginate(2)
                     ->setPath('');
                 $task->appends(array(
                     'search'=>$request->input('search'),
+                    'start_date'=>$request->input('start_date'),
+                    'finish_date'=>$request->input('finish_date')
                 ));
                 if (count($task)>0){
                     $data["title"]="Rapor";

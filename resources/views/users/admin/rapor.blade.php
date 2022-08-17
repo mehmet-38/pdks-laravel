@@ -21,21 +21,24 @@
     </div>
     <div class="card-body">
     <h1>Rapor</h1>
-        <div class="row">
-            <div class="col-3">
-                <label>Start Date</label>
-                <input  class="form-control" type="date" id="start_date"  min="2022-01-01" max="2022-12-31">
 
-            </div>
-            <div class="col-3">
-                <label>Finish Date</label>
-                <input  class="form-control "  type="date" id="finish_date"  min="2022-01-01" max="2022-12-31">
-            </div>
-        </div>
-        <label class="mt-5">Aramak için isim giriniz</label>
+
         <form method="get" action="{{route('a-rapor')}}">
             <div class="form-group">
+                <div class="row">
+                    <div class="col-3">
+                        <label>Start Date</label>
+                        <input  class="form-control" type="date" id="start_date" name="start_date" min="2022-01-01" max="2022-12-31">
+
+                    </div>
+                    <div class="col-3">
+                        <label>Finish Date</label>
+                        <input  class="form-control "  type="date" id="finish_date" name="finish_date" min="2022-01-01" max="2022-12-31">
+                    </div>
+                </div>
+                <label class="mt-5">Aramak için isim giriniz</label>
                 <input  class="form-control col-sm-3 mt-1"   style="" type="text" id="search" name="search" >
+
                 <input type="submit" class="btn btn-primary" value="Search"/>
             </div>
         </form>

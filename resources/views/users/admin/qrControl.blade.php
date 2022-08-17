@@ -17,17 +17,18 @@
 </div>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Qrs</h6><br>
+        <h6 class="m-0 font-weight-bold text-primary">Qr kod okutma verileri</h6><br>
 
 
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
-                    <th>Code</th>
-                    <th>Park Id</th>
+                    <th>Okutma Değeri</th>
+                    <th>Park İsmi</th>
+                    <th>Qr Okutan Kişi</th>
 
                 </tr>
                 </thead>
@@ -37,7 +38,8 @@
                     <tr>
 
                         <td>{{$qr->QRdata}}</td>
-                        <td>{{$qr->fk_parkID}}</td>
+                        <td>{{$qr->parkName}}</td>
+                        <td>{{$qr->name}}</td>
 
                     </tr>
                 @endforeach

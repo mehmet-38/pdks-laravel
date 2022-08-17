@@ -3,7 +3,7 @@
 /public/storage
 /storage/*.key
 /vendor
-
+/app/Http/Controllers/adminsdk2.json
 .env
 .env.backup
 .phpunit.result.cache
